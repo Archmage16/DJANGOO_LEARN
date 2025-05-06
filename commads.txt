@@ -1,0 +1,21 @@
+https://django.fun/docs/django/5.2/ ---> docs
+https://metanit.com/python/django/ ---> ещё доки
+python manage.py runserver ---> run
+
+django-admin startproject 'name' ---> create django-project
+python manage.py startapp polls ---> polls
+
+python manage.py migrate ---> создание таблицы в бд
+python manage.py makemigrations polls ---> создание новых бд
+
+python manage.py shell ---> консоль в django
+Work with shell:
+    1) imports
+    2) all()
+    3) filter()
+    4) get()
+    5) update()
+    0) save()
+
+
+qwert132
