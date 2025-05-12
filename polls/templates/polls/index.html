@@ -1,0 +1,17 @@
+{% comment %} {% load static %} {% endcomment %}
+<div class="">
+    {% if showMess %}
+        {{questions}}
+    {%endif%}
+</div>
+<br>
+<div class="">
+    {% for q in questions %}
+    <h3>{{q}}</h3>
+        {% for c in q.choice_set.all %}
+            <p>№{{forloop.counter}}<p>
+            <ul>{{c}} <a href="{% url 'votes' c.id %}" target="_blank">Like</a></ul>
+            
+        {% endfor %}
+    {% endfor %}
+</div>
