@@ -9,8 +9,14 @@ from polls.models import Question, Choice
 # Create your views here.
 def index(req):
     ques = Question.objects.all()
-    cont = {'questions': ques, 'mess':"Hi boss!", 'showMess': False}
-    return render(req,'polls/index.html', cont)
+    cont = {'questions': ques, 'mess':"Hi boss!", 'showMess': False,
+            "prod": [
+                {"name":'Apple', "price": 500},
+                {"name":'Macaroni', "price": 400},
+                {"name":'Milk', "price": 700},
+            ]}
+    # return render(req,'polls/index.html', cont)
+    return render(req,'polls/in.html', cont)
 
 def detail(req, question_id):
     # try:

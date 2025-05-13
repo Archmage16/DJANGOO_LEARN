@@ -1,13 +1,26 @@
-{% comment %} {% load static %} {% endcomment %}
+{% load static %} 
+<html>
+<link rel="stylesheet" href="{% static 'main.css' %}">
 <div class="">
     {% if showMess %}
         {{questions}}
     {%endif%}
 </div>
+<div>
+    <img src="{% static 'github.jpg'%}" alt="">
+</div>
 <br>
 <div class="">
+    <div class="">
+        <!-- {%comment%}{%for i in prod|dictsort:'price'%}{%endcomment%} -->
+        {%for i in prod%}
+            {{i.name}}
+        {%endfor%}
+    </div>
     {% for q in questions %}
     <h3>{{q}}</h3>
+    <p>{{q.date_time}}</p>
+    <p>{{q.date_time|date:"d:m:Y H:i:s"}}</p>
         {% for c in q.choice_set.all %}
             <p>№{{forloop.counter}}<p>
             <ul>{{c}} <a href="{% url 'votes' c.id %}" target="_blank">Like</a></ul>
@@ -15,3 +28,4 @@
         {% endfor %}
     {% endfor %}
 </div>
+</html>
