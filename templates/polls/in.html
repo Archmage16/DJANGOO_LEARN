@@ -1,6 +1,42 @@
-{%extends "ff.html"%}
-{%block title%}My site -polls {%endblock%}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %} 
+    <link rel="stylesheet" href="{% static 'main.css' %}">
+    <title>Document</title>
+</head>
+<body>
+    
+    <div class="">
+        {% if showMess %}
+            {{questions}}
+        {%endif%}
+    </div>
+    <div>
+        <img src="{% static 'github.jpg'%}" alt="">
+    </div>
+    <br>
 
-{%block content%}
-    <h1>Welcome</h1>
-{%endblock%}
+    <div class="">
+        <div class="">
+            <!-- {%comment%}{%for i in prod|dictsort:'price'%}{%endcomment%} -->
+            {%for i in prod%}
+                {{i.name}}
+            {%endfor%}
+        </div>
+        
+        {% for q in questions %}
+        <h3>{{q}}</h3>
+        <p>{{q.date_time}}</p>
+        <p>{{q.date_time|date:"d:m:Y H:i:s"}}</p>
+            {% for c in q.choice_set.all %}
+                <p>№{{forloop.counter}}<p>
+                <ul>{{c}} <a href="{% url 'votes' c.id %}" target="_blank">Like</a></ul>
+                
+            {% endfor %}
+        {% endfor %}
+    </div>
+</body>
+</html>

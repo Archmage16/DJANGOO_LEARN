@@ -6,6 +6,7 @@ from django.db.models import F
 
 from polls.models import Question, Choice
 
+
 # Create your views here.
 def index(req):
     ques = Question.objects.all()

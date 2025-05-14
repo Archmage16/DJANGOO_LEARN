@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {%load static%}
+    <link rel="stylesheet" href="{% static 'blog.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+    <title>Posts</title>
+</head>
+<body>
+    <div class="cards">
+        {%for p in posts%}
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{p.title}}</h5>
+                    <p class="card-text">{{p.content|truncatewords:30}}</p>
+                    <a href="{% url 'post' p.author.user.username p.title %}" class="btn btn-primary">Перейти куда-нибудь</a> <br>
+                    <a href="{% url 'user' p.author.user.username %}">{{p.author.user.username}}</a>
+                    <p>Was published {{p.created_time|date:"d.m.Y"}}</p>
+                </div>
+            </div>
+        {%endfor%}
+        
+    
+    </div>
+    
+</body>
+</html>
