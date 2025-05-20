@@ -1,4 +1,4 @@
-<html>
+<html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -29,7 +29,10 @@
     <p>{{q.date_time|date:"d:m:Y H:i:s"}}</p>
         {% for c in q.choice_set.all %}
             <p>№{{forloop.counter}}<p>
-            <ul>{{c}} <a href="{% url 'votes' c.id %}" target="_blank">Like</a></ul>
+            <ul>
+                <li>{{c}} 
+                <a href="{% url 'votes' c.id %}" target="_blank">Like</a>></li>
+            </ul>
             
         {% endfor %}
     {% endfor %}
