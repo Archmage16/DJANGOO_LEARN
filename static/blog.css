@@ -1,9 +1,13 @@
-.cardss{
+.cards{
     margin: 20px 0 0;
-    
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
 }
 .card{
-    
+    border: 1px solid;
     border-radius: 18px;
     width: 18rem;
 }

@@ -23,3 +23,13 @@ class Tag(models.Model):
     posts = models.ManyToManyField(Post, related_name='tags')
     def __str__(self) -> str:
         return f"{self.name}"
+    
+class Comment(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    text = models.TextField(null=False, blank=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self) -> str:
+        return f"Comment by {self.author.username} on {self.post.title}"
+    

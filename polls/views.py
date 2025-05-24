@@ -6,6 +6,10 @@ from django.core.paginator import Paginator
 
 
 from polls.models import Question, Choice
+from polls.forms import QuestionForm
+from polls.forms import QuestionModelform
+# from polls.forms import ChoiceForm
+from polls.forms import ChoiceModelform
 
 
 # Create your views here.
@@ -21,25 +25,54 @@ def index(req):
     return render(req,'polls/in.html', cont)
 def question(req):
     if req.method == 'POST':
-        text = req.POST.get('question_text')
-        q1 = Question.objects.create(question_text=text)    
-        q1.save()
-        return render(req, 'polls/forms.html', {'question': q1})
+        form = QuestionModelform(req.POST)
+        if form.is_valid():
+            # question_text = form.cleaned_data['question_text']
+            # question = Question.objects.create(question_text=question_text)
+            form.save()
+            return render(req, 'polls/forms.html', {'form': form})
+        else:
+            error = form.errors
+            return render(req, 'polls/forms.html', {'error': error})
     else:
-        return render(req, 'polls/forms.html')
+        form = QuestionForm()
+        return render(req, 'polls/forms.html', {'form': form})
     
+# def choices(req):
+#     if req.method == 'POST':
+#         form = ChoiceForm(req.POST)
+#         if form.is_valid():
+#             text_choice = form.cleaned_data['text_choice']
+#             question_id = form.cleaned_data['question_id']
+#             votes = form.cleaned_data['votes']
+#             question = Question.objects.get(id=question_id)
+#             if not question:
+#                 return HttpResponse("Question not found")
+#             choice = Choice.objects.create(text_choice=text_choice, question_text=question, votes=votes)
+#             choice.save()
+#             return render(req, 'polls/choices.html', {'form': form})
+#         else:
+#             error = form.errors
+#             return render(req, 'polls/choices.html', {'error': error})
+            
+#     else:
+#         form = ChoiceForm()
+#         return render(req, 'polls/choices.html', {'form': form})
 def choices(req):
     if req.method == 'POST':
-        text = req.POST.get('choice_text')
-        question_id = req.POST.get('question_id')
-        # print(question_id)
-        q1 = Question.objects.get(id=question_id)
-        print(q1)
-        c1 = Choice.objects.create(text_choice=text, question_text=q1)
-        c1.save()
-        return render(req, 'polls/choices.html', {'choice': c1})
+        form = ChoiceModelform(req.POST)
+        if form.is_valid():
+            # choice = Choice.objects.create(**form.cleaned_data)
+            form.save()
+            return render(req, 'polls/choices.html', {'form': form})
+        else:
+            error = form.errors
+            return render(req, 'polls/choices.html', {'error': error})
+            
     else:
-        return render(req, 'polls/choices.html')
+        form = ChoiceModelform()
+        return render(req, 'polls/choices.html', {'form': form})   
+    
     
     
 def paginator(req):
