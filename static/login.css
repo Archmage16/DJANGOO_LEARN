@@ -1,0 +1,13 @@
+body,form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h3,footer{
+    text-align: center;
+}
+.form{
+    padding: 20px;
+    border: 1px solid;
+}

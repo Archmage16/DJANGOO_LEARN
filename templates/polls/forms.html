@@ -7,7 +7,7 @@
 </head>
 <body>
     <div class="">
-        <form action="{% url 'question' %}" method="post">
+        <form action="{% url 'polls:question' %}" method="post">
             <!-- <input type="text" name="question_text" placeholder="Question Text" value="{{ question_text | default:'' }}"> -->
             {{form}} 
             <input type="submit" value="submit">

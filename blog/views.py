@@ -8,10 +8,12 @@ from blog.forms import TagModelForm, PostModelForm, ProfModelForm, CommentModelF
 # Create your views here.
 def index(req):
     users = User.objects.all()
+    user = req.user
     p = Post.objects.all()
     cont = {
         "posts": p,
         "users": users,
+        "user": user,
     }
     return render(req,'blog/index.html', cont)
 

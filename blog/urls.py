@@ -1,6 +1,9 @@
 from django.urls import path
+
+from .apps import BlogConfig
 from . import views
 
+app_name = BlogConfig.name
 urlpatterns = [
     path('', views.index, name='index'),
     path('tagForm/', views.tagForm, name='tagForm'),

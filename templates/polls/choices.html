@@ -12,7 +12,7 @@
         {% endif %}
     </div>
     <div class="">
-        <form action="{% url 'choices' %}" method="post">
+        <form action="{% url 'polls:choices' %}" method="post">
             <!-- <input type="number" name="question_id" value="{{ question.id }}">
             <input type="text" name="choice_text" placeholder="Choice Text" value="{{ choice_text | default:'' }}"> -->
             {{form}}

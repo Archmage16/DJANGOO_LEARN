@@ -11,3 +11,12 @@
     border-radius: 18px;
     width: 18rem;
 }
+
+h1,footer{
+    text-align: center;
+}
+.df{
+    display: flex;
+    align-items: center;
+        flex-direction: column;
+}
