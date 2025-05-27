@@ -11,22 +11,27 @@
     <title>BLOG</title>
 </head>
 <body>
-    <header>
-        {% if user.is_authenticated%}
-            <div class="df">
-                <h1> Welcome {{user.username}} to My Blog</h1>
-                <form method="post" action="{% url 'logout'%}">
-                    {% csrf_token %}
-                    <button type="submit">Logout</button>
-                </form>
-            </div>
-        {%else%}
-            <h1> Welcome to My Blog</h1>
-            <p><a href="{% url 'login'%}">Login</a></p>
-        {%endif%}
-        
-    </header>
-    <div class="cards">
+    {% if user.is_authenticated %}
+        <div class="df">
+            <h1>Welcome, {{ user.username }}!</h1>
+            <form method="post" action="{% url 'blog:logout'%}">
+                {% csrf_token %}
+                <button type="submit">Logout</button>
+            </form>
+        </div>
+       
+    {% else %}
+        <div class="df">
+            <h1>Welcome to the Blog!</h1>
+            <form method="post" action="{% url 'blog:login'%}">
+                {% csrf_token %}
+                <button type="submit">Login</button>
+            </form>
+
+        </div>
+    {% endif %}
+
+     <div class="cards">
         {%for p in posts%}
             <div class="card">
                 <div class="card-body">
@@ -39,7 +44,6 @@
                 </div>
             </div>
         {%endfor%}
-        
     </div>
     <footer>
         <p>© All rights reserved.</p>

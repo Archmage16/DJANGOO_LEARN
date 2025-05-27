@@ -12,7 +12,7 @@
         <title>{{user.username}}</title>
     {% endblock %}
     {% block content %}
-        <a href="{% url 'index'%}">Home</a>
+        <a href="{% url 'blog:index'%}">Home</a>
 
         <h1>{{user.username}}</h1>
         <p>Was registered {{user.date_joined|date:"d.m.Y"}}</p>
@@ -20,7 +20,7 @@
         <h3>POSTS</h3>
         {%for i in posts%}
             <h5 class="">{{i}}</h5>
-            <a href="{% url 'post' i.author.user.username i.title %}">go to post</a> 
+            <a href="{% url 'blog:post' i.author.user.username i.title %}">go to post</a> 
         {%endfor%}
     {% endblock %}
     
