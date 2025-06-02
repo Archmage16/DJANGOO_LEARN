@@ -4,8 +4,7 @@ from django.http import HttpResponse
 from django.contrib.auth.models import User
 from blog.models import Prof, Post, Tag
 from blog.forms import TagModelForm, PostModelForm, ProfModelForm, CommentModelForm
-from django.contrib.auth.views import LoginView
-from django.urls import reverse_lazy
+
 # Create your views here.
 def index(req):
     users = User.objects.all()
