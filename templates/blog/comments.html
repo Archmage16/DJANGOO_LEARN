@@ -7,7 +7,7 @@
 </head>
 <body>
 
-    <a href="{% url 'index'%}">Home</a>
+    <a href="{% url 'blog:index'%}">Home</a>
     <h1>Comments for {{ post.title }}</h1>
     <div class="comments">
         {% for comment in comments %}
@@ -20,7 +20,7 @@
         {% endfor %}
     </div>
 
-    <a href="{%url 'commentForm' %}">Write a comment</a>
+    <a href="{%url 'blog:commentForm' %}">Write a comment</a>
 
 </body>
 </html>

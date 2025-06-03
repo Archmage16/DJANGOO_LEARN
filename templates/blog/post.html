@@ -13,7 +13,7 @@
     {% endblock %}
 
     {% block content %}
-    <a href="{% url 'index'%}">Home</a>
+    <a href="{% url 'blog:index'%}">Home</a>
         <div class="cards">
             <h1>{{post.title}}</h1>
             <p>{{post.content}}</p>

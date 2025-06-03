@@ -1,11 +1,15 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
+
+# from django.contrib.auth.views import redirect_to_login
 from blog.models import Prof, Post, Tag
 from blog.forms import TagModelForm, PostModelForm, ProfModelForm, CommentModelForm
 
 # Create your views here.
+@login_required()
 def index(req):
     users = User.objects.all()
     user = req.user
@@ -17,54 +21,76 @@ def index(req):
     }
     return render(req,'blog/index.html', cont)
 
-def user(req, username):
-    try:
-        user = User.objects.get(username=username)
-        prof = Prof.objects.get(user=user)
-        posts = Post.objects.filter(author=prof)
-        tags = Tag.objects.all()
-        cont = {
-            "user": user,
-            "prof": prof,
-            "posts": posts,
-            "tags": tags,
-        }
-        return render(req, 'blog/user.html', cont)
-    except Prof.DoesNotExist:
-        return HttpResponse("I can't find this user")
 
+def myauth(req):
+    if req.user.is_authenticated:
+        mess = 'User is login'
+    else:
+        mess = "User isn't login"
+    return HttpResponse(mess)
+
+
+
+
+def user(req, username):
+    if req.user.is_authenticated:
+        print(1)
+        try:
+            user = User.objects.get(username=username)
+            prof = Prof.objects.get(user=user)
+            posts = Post.objects.filter(author=prof)
+            tags = Tag.objects.all()
+            cont = {
+                "user": user,
+                "prof": prof,
+                "posts": posts,
+                "tags": tags,
+            }
+            return render(req, 'blog/user.html', cont)
+        except Prof.DoesNotExist:
+            return HttpResponse("I can't find this user")
+    else:
+        return redirect('blog:login')
+    
+    
 def post(req, username, title):
-    try:
-        user = User.objects.get(username=username)
-        prof = Prof.objects.get(user=user)
-        post = Post.objects.get(title=title, author=prof)
-        tags = Tag.objects.all()
-        cont = {
-            "user": user,
-            "prof": prof,
-            "post": post,
-            "tags": tags,
-        }
-        return render(req, 'blog/post.html', cont)
-    except Post.DoesNotExist:
-        return HttpResponse("I can't find this post")
+    if req.user.is_authenticated:
+        try:
+            user = User.objects.get(username=username)
+            prof = Prof.objects.get(user=user)
+            post = Post.objects.get(title=title, author=prof)
+            tags = Tag.objects.all()
+            cont = {
+                "user": user,
+                "prof": prof,
+                "post": post,
+                "tags": tags,
+            }
+            return render(req, 'blog/post.html', cont)
+        except Post.DoesNotExist:
+            return HttpResponse("I can't find this post")
+    else:
+        return redirect('blog:login')
     
 def postComment(req, username, title):
-    try:
-        user = User.objects.get(username=username)
-        prof = Prof.objects.get(user=user)
-        post = Post.objects.get(title=title, author=prof)
-        tags = Tag.objects.all()
-        cont = {
-            "user": user,
-            "prof": prof,
-            "post": post,
-            "tags": tags,
-            'comments': post.comments.all(),
-        }
-        return render(req, 'blog/comments.html', cont)
-    except Post.DoesNotExist:
-        return HttpResponse("I can't find this post")
+    if req.user.is_authenticated:
+        try:
+            user = User.objects.get(username=username)
+            prof = Prof.objects.get(user=user)
+            post = Post.objects.get(title=title, author=prof)
+            tags = Tag.objects.all()
+            cont = {
+                "user": user,
+                "prof": prof,
+                "post": post,
+                "tags": tags,
+                'comments': post.comments.all(),
+            }
+            return render(req, 'blog/comments.html', cont)
+        except Post.DoesNotExist:
+            return HttpResponse("I can't find this post")
+    else:
+        return redirect('blog:login')
 
 
 def postForm(req):

@@ -9,6 +9,7 @@ from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeDoneV
 app_name = BlogConfig.name
 urlpatterns = [
     path('', views.index, name='index'),
+    path('myauth/', views.myauth, name = 'myauth'),
     
     path('login/', LoginView.as_view(template_name='blog/reg/login.html'), name='login'),
     path('logout/', LogoutView.as_view(template_name='blog/reg/logout.html'), name='logout'),

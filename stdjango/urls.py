@@ -17,9 +17,11 @@ Including another URLconf
 from re import template
 from django.contrib import admin
 from django.urls import path, include
+from . import views
 # from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeDoneView, PasswordChangeView
 
 urlpatterns = [
+    path('', views.index),
     path('admin/', admin.site.urls),
     path('polls/', include('polls.urls', namespace='polls')),
     path('blog/', include('blog.urls', namespace='blog')),
