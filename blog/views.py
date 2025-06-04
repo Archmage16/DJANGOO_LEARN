@@ -9,15 +9,17 @@ from blog.models import Prof, Post, Tag
 from blog.forms import TagModelForm, PostModelForm, ProfModelForm, CommentModelForm
 
 # Create your views here.
-@login_required()
+# @login_required()
 def index(req):
     users = User.objects.all()
     user = req.user
-    p = Post.objects.all()
+    p = list(Post.objects.all())
+    revers_only5 = p[::-1][:5]  
     cont = {
         "posts": p,
         "users": users,
         "user": user,
+        "rever_posts": revers_only5,
     }
     return render(req,'blog/index.html', cont)
 
@@ -102,16 +104,19 @@ def postForm(req):
     else:
         form = PostModelForm()
         return render(req, 'blog/forms/postForm.html', {'form': form})
-
 def profForm(req):
-    if req.method == "POST":
-        form = ProfModelForm(req.POST)
-        if form.is_valid():
-            form.save()
-            return HttpResponse("Profile created successfully")
+    if req.user.is_authenticated:
+        if req.method == 'POST':
+            form = ProfModelForm(req.POST, instance=req.user.prof)
+            if form.is_valid():
+                form.save()
+                return HttpResponse("Profile updated successfully")
+        else:
+            form = ProfModelForm(instance=req.user.prof)
+            return render(req, 'blog/forms/profForm.html', {'form': form})
     else:
-        form = ProfModelForm()
-        return render(req, 'blog/forms/prof_form.html', {'form': form})
+        return redirect('blog:login')
+
 
 def tagForm(req):
     if req.method == 'POST':

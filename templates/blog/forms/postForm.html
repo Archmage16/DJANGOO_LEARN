@@ -7,7 +7,7 @@
 </head>
 <body>
     <div class="">
-        <form action="{% url 'postForm' %}" method="post">
+        <form action="{% url 'blog:postForm' %}" method="post">
             {{ form }}
             <input type="submit" value="submit">
             {% csrf_token %}

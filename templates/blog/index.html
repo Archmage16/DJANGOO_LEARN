@@ -11,6 +11,7 @@
     <title>BLOG</title>
 </head>
 <body>
+
     {% if user.is_authenticated %}
         <div class="df">
             <h1>Welcome, {{ user.username }}!</h1>
@@ -19,20 +20,13 @@
                 <button type="submit">Logout</button>
             </form>
             <p><a href="{% url 'blog:password_change'%}">Change password</a></p>
+            <h3>The All posts</h3>
         </div>
+        <p><a href="{%url 'blog:postForm'%}">Write your posts</a></p>
        
-    {% else %}
-        <div class="df">
-            <h1>Welcome to the Blog!</h1>
-            <form method="post" action="{% url 'blog:login'%}">
-                {% csrf_token %}
-                <button type="submit">Login</button>
-            </form>
+    
 
-        </div>
-    {% endif %}
-
-     <div class="cards">
+    <div class="cards">
         {%for p in posts%}
             <div class="card">
                 <div class="card-body">
@@ -46,6 +40,36 @@
             </div>
         {%endfor%}
     </div>
+    <div class="">
+    </div>
+
+    {% else %}
+        <div class="df">
+            <h1>Welcome to the Blog!</h1>
+            <form method="post" action="{% url 'blog:login'%}">
+                {% csrf_token %}
+                <button type="submit">Login</button>
+            </form>
+            <h3>The Last 5 posts</h3>
+            <p><a href="{%url 'blog:login'%}">View all posts</a></p>
+        </div>
+        <p><a href="{%url 'blog:login'%}">Write your posts</a></p>
+
+        <div class="cards">
+            {%for p in rever_posts%}
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{p.title}}</h5>
+                        <p class="card-text">{{p.content|truncatewords:30}}</p>
+                        <a href="{% url 'blog:post' p.author.user.username p.title %}" class="btn btn-primary">Посмотреть информацию о посте</a> <br><br>
+                        <a href="{% url 'blog:user' p.author.user.username %}">{{p.author.user.username}} info</a>
+                        <p>Was published {{p.created_time|date:"d.m.Y"}}</p>
+                        <p><a href="{% url 'blog:postComment' p.author.user.username p.title%}">See all comments</a></p>
+                    </div>
+                </div>
+            {%endfor%}
+        </div>
+    {% endif %}
     <footer>
         <p>© All rights reserved.</p>
     </footer>
