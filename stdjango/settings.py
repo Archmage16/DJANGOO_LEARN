@@ -145,7 +145,6 @@ EMAIL_HOST_USER = 'mken9195@gmail.com'
 
 
 
-# EMAIL_HOST_PASSWORD = 'Qwerty132++aaQ'
 EMAIL_HOST_PASSWORD = 'ibhd giib niom ttul'
 
 
