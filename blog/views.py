@@ -116,8 +116,6 @@ def profForm(req):
             return render(req, 'blog/forms/profForm.html', {'form': form})
     else:
         return redirect('blog:login')
-
-
 def tagForm(req):
     if req.method == 'POST':
         form = TagModelForm(req.POST)
@@ -126,8 +124,7 @@ def tagForm(req):
             return HttpResponse("Tag created successfully")
     else:
         form = TagModelForm()
-        return render(req, 'blog/forms/tag_form.html', {'form': form})
-    
+        return render(req, 'blog/forms/tag_form.html', {'form': form})   
 def commentForm(req):
     if req.method == 'POST':
         form = CommentModelForm(req.POST)

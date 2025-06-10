@@ -3,6 +3,10 @@ from django.http import HttpResponse
 from django.core import exceptions
 from django.db.models import F
 from django.core.paginator import Paginator
+from django.views import View
+from django.views.generic.edit import FormView
+from django.views.generic.base import TemplateView
+from django.views.generic.detail import DetailView
 
 
 from polls.models import Question, Choice
@@ -11,18 +15,23 @@ from polls.forms import QuestionModelform
 # from polls.forms import ChoiceForm
 from polls.forms import ChoiceModelform
 
-
 # Create your views here.
 def index(req):
     ques = Question.objects.all()
-    cont = {'questions': ques, 'mess':"Hi boss!", 'showMess': False,
-            "prod": [
-                {"name":'Apple', "price": 500},
-                {"name":'Macaroni', "price": 400},
-                {"name":'Milk', "price": 700},
-            ]}
+    cont = {'questions': ques, 'mess':"Hi boss!", 'showMess': False,}
     # return render(req,'polls/index.html', cont)
-    return render(req,'polls/in.html', cont)
+    return render(req,'polls/in.html', cont) 
+
+class IndexView(TemplateView):
+    template_name = 'polls/in.html'
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['questions'] = Question.objects.all()
+        return context
+    
+
+
+
 def question(req):
     if req.method == 'POST':
         form = QuestionModelform(req.POST)
@@ -38,6 +47,18 @@ def question(req):
         form = QuestionForm()
         return render(req, 'polls/forms.html', {'form': form})
     
+class AddQues(FormView):
+    template_name = "polls/forms.html"
+    form_class = QuestionModelform
+    success_url = 'question-suc/'
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
+
+class Suc(View):
+    def get(self, req):
+        return render(req, 'polls/question-suc.html')
+
 # def choices(req):
 #     if req.method == 'POST':
 #         form = ChoiceForm(req.POST)
@@ -90,17 +111,34 @@ def paginator(req):
     }
     return render(req, 'polls/paginator.html', context)
 
-def detail(req, question_id):
-    # try:
-    #     objecst = Question.objects.get(id = question_id)
-    #     return HttpResponse(objecst)
-    # except exceptions.ObjectDoesNotExist:
-    #     return HttpResponse("Sorry we don't have this odject")
-    objectt = Question.objects.filter(id=question_id).first()
-    ans = Choice.objects.filter(question_text_id = question_id).first()
-    if objectt and ans:
-        return HttpResponse(f"{objectt} <br>{ans} votes")
-    return HttpResponse("Sorry we don't have this quesiton or ans")
+
+
+
+# def detail(req, question_id):
+#     try:
+#         objecst = Question.objects.get(id = question_id)
+#         return HttpResponse(objecst)
+#     except exceptions.ObjectDoesNotExist:
+#         return HttpResponse("Sorry we don't have this odject")
+    
+
+# class PollsDetailView(View):
+#     http_method_names = ['get']
+
+#     def get(self, req, question_id):
+#         objectt = Question.objects.filter(id=question_id).first()
+#         ans = Choice.objects.filter(question_text_id = question_id).first()
+#         if objectt and ans:
+#             return HttpResponse(f"{objectt} <br>{ans}")
+#         return HttpResponse("Sorry we don't have this quesiton or ans")
+
+class QuesDetailView(DetailView):
+    model = Question
+    pk_url_kwarg = 'question_id' 
+
+
+
+
 
 def votes(req, choice_id):
     choice = Choice.objects.filter(id=choice_id)
@@ -109,3 +147,15 @@ def votes(req, choice_id):
         return HttpResponse(choice)
     return HttpResponse("Can't fint this choice")
     
+
+
+class Greet(View):
+    greet = "HI"
+    def get(self, req):
+        return HttpResponse(self.greet)
+
+class TeacherGreet(Greet):
+    greet = "Hi teacher"
+
+class StudentGreet(Greet):
+    greet = "Hi Student"
