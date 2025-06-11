@@ -17,7 +17,7 @@ urlpatterns = [
 
     path('choice/', views.choices, name='choices'),
 
-    # Greetin
+    # Greeting
     path('Teacher/', views.TeacherGreet.as_view(), name='teacher'),
     path('Student/', views.StudentGreet.as_view(), name='student'),
     path('redirect/', RedirectView.as_view(pattern_name='polls:index'), name='redirect'),
