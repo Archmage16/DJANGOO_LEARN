@@ -2,10 +2,10 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 
 
-from django.views.generic.edit import FormView
+from django.views.generic.edit import FormView, CreateView, DeleteView, UpdateView
 from django.views.generic.base import TemplateView
 from django.views.generic.detail import DetailView
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin, PermissionRequiredMixin
 
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -113,9 +113,12 @@ def myauth(req):
 #     else:
 #         return redirect('blog:login')
 
-class UserProfileView(LoginRequiredMixin, TemplateView):
+class UserProfileView(LoginRequiredMixin, DetailView):
+    model = Prof
     template_name = 'blog/user.html'
-
+    # pk_url_kwarg = 'user__username'
+    slug_url_kwarg = 'username'
+    slug_field = 'user__username'
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         username = self.kwargs['username']
@@ -133,13 +136,16 @@ class UserProfileView(LoginRequiredMixin, TemplateView):
         context['posts'] = posts
         context['tags'] = Tag.objects.all()
         return context
+
+
+    
+
 class PostDetailView(LoginRequiredMixin, DetailView):
     model = Post
     template_name = 'blog/post.html'
+    
     context_object_name = 'post'
-
     def get_object(self):
-        
         username = self.kwargs['username']
         title = self.kwargs['title']
         try:
@@ -164,6 +170,8 @@ class PostDetailView(LoginRequiredMixin, DetailView):
         context['prof'] = prof
         context['tags'] = Tag.objects.all()
         return context 
+    
+
 class PostCommentsView(LoginRequiredMixin, TemplateView):
     template_name = 'blog/comments.html'
 
@@ -278,5 +286,3 @@ class CommentFormView(LoginRequiredMixin, FormView):
     def form_valid(self, form):
         form.save()
         return HttpResponse("Comment created successfully <a href='/blog'>Go back</a>")
-    
-    

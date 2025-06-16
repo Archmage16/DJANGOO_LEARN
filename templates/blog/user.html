@@ -1,30 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Author info</title>
-</head>
-<body>
-    {% extends "base.html" %}
-    
-    {% block title %}
-        <title>{{user.username}}</title>
-    {% endblock %}
-    {% block content %}
-        <a href="{% url 'blog:index'%}">Home</a>
 
-        <h1>{{user.username}}</h1>
-        <p>Was registered {{user.date_joined|date:"d.m.Y"}}</p>
-        <p>Last login {{user.last_login|date:"d.m.Y"}}</p>
-        <h3>POSTS</h3>
-        {%for i in posts%}
-            <h5 class="">{{i}}</h5>
-            <a href="{% url 'blog:post' i.author.user.username i.title %}">go to post</a> 
-        {%endfor%}
-    {% endblock %}
-    
-    
+{% extends "base.html" %}
 
-</body>
-</html>
+{% block title %} {{user.username}} Infomation {% endblock %}
+    {%load static%}
+
+<link rel="stylesheet" href="{% static 'user.css' %}">
+
+{% block content %}
+    <a href="{% url 'blog:index'%}">Home</a>
+
+    <h1 class="username">{{user.username}}</h1>
+    <p>Was registered {{user.date_joined|date:"d.m.Y"}}</p>
+    <p>Last login {{user.last_login|date:"d.m.Y"}}</p>
+    <h3>POSTS</h3>
+    {%for i in posts%}
+        <h5 class="">{{i}}</h5><br>
+        <a href="{% url 'blog:post' i.author.user.username i.title %}">go to post</a> 
+    {%endfor%}
+{% endblock %}
+ 

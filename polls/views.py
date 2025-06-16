@@ -4,9 +4,11 @@ from django.core import exceptions
 from django.db.models import F
 from django.core.paginator import Paginator
 from django.views import View
-from django.views.generic.edit import FormView
+from django.views.generic.edit import FormView, CreateView, DeleteView, UpdateView
 from django.views.generic.base import TemplateView
 from django.views.generic.detail import DetailView
+from django.views.generic.list import ListView
+from django.urls import reverse_lazy
 
 
 from polls.models import Question, Choice
@@ -96,21 +98,27 @@ def choices(req):
     
     
     
-def paginator(req):
-    ques = Question.objects.all()
-    paginator = Paginator(ques, 3)
-    page_number = req.GET.get('page')
-    if page_number is None:
-        page_number = 1
-    if int(page_number) > int(paginator.num_pages):
-        paginator = Paginator(ques, 13)
-    page_obj = paginator.get_page(page_number)
-    context = {
-        'page_obj': page_obj,
-        'paginator': paginator,
-    }
-    return render(req, 'polls/paginator.html', context)
+# def paginator(req):
+#     ques = Question.objects.all()
+#     paginator = Paginator(ques, 3)
+#     page_number = req.GET.get('page')
+#     if page_number is None:
+#         page_number = 1
+#     if int(page_number) > int(paginator.num_pages):
+#         paginator = Paginator(ques, 13)
+#     page_obj = paginator.get_page(page_number)
+#     context = {
+#         'page_obj': page_obj,
+#         'paginator': paginator,
+#     }
+#     return render(req, 'polls/paginator.html', context)
 
+class QuestionListView(ListView):
+    model = Question
+    template_name = 'polls/paginator.html'
+    context_object_name = 'questions'
+    paginate_by = 4
+    pass
 
 
 
@@ -136,9 +144,22 @@ class QuesDetailView(DetailView):
     model = Question
     pk_url_kwarg = 'question_id' 
 
-
-
-
+class QuesCreateeView(CreateView):
+    model = Question
+    fields = ['question_text']    
+    template_name = 'polls/formQues.htmll'
+    success_url = reverse_lazy('polls:question-suc')
+class QuesUpdateView(UpdateView):
+    model = Question
+    fields = ['question_text']
+    pk_url_kwarg = 'question_id'
+    template_name = 'polls/formQues.html'
+    success_url = reverse_lazy('polls:question-suc')
+class QuesDeleteView(DeleteView):
+    model = Question
+    template_name = 'polls/formQues.html'
+    pk_url_kwarg = 'question_id'
+    success_url = reverse_lazy('polls:question-suc')
 
 def votes(req, choice_id):
     choice = Choice.objects.filter(id=choice_id)

@@ -14,11 +14,11 @@
 
     {% block content %}
     <a href="{% url 'blog:index'%}">Home</a>
-        <div class="cards">
+        <div class="">
             <h1>{{post.title}}</h1>
             <p>{{post.content}}</p>
             <p>Was published {{post.created_time|date:"d.m.Y"}}</p>
-            <a href="{% url 'blog:user' post.author.user.username %}">{{post.author.user.username}}</a>
+            <a href="{% url 'blog:user' post.author.user.username %}">{{post.author.user.username}}</a><br>
             <a href="{% url 'blog:postComment' post.author.user.username post.title%}">See comments</a>
         </div>
 

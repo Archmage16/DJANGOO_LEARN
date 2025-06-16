@@ -1,0 +1,28 @@
+body{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 24px;
+}
+
+.pagination{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    border: 1px solid black;
+    padding: 6px 8px;
+}
+
+
+.question_text > p, .current{
+    text-align: center;
+
+}
+
+.step-links > a{
+    text-decoration: none;
+    color: red;
+    margin: 4px 8px;
+}
