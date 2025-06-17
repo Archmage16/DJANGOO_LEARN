@@ -1,7 +1,15 @@
 h3{
     color: red;
 }
-html{
-    background-color: rgb(125, 7, 157);
-}
 
+.quess{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+.ques{
+    width: 200px;
+    height: 300px;
+}

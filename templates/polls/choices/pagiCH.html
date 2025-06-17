@@ -12,8 +12,9 @@
 
     <div class="pagination">
         <div class="question_text">
+            <p>{{question_text}}</p>
             {% for obj in page_obj%}
-                <p>{{ obj.question_text}}</p>
+                <p>{{ obj.text_choice}} - {{obj.votes}}</p>
             {% endfor %}
         </div>
     

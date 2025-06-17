@@ -8,30 +8,44 @@
     <title>Document</title>
 </head>
 <body>
-    
-    <div class="">
-        {% if showMess %}
-            {{questions}}
-        {%endif%}
-    </div>
-    <div>
-        <img src="{% static 'github.jpg'%}" alt="">
-    </div>
+    {%comment%}<div> <img src="{% static 'github.jpg'%}" alt=""> </div>{% endcomment %}
     <br>
 
-    <div class="">
 
-        
+    
+    <div class="">
         {% for q in questions %}
-        <h3>{{q}}</h3>
+        <h3>{{q}} - <a href="{%url 'polls:detail' q.id%}">More information</a></h3>
         <p>{{q.date_time}}</p>
         <p>{{q.date_time|date:"d:m:Y H:i:s"}}</p>
+        
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}
+            
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+            
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+
+        <!-- {%comment%}
             {% for c in q.choice_set.all %}
-                <p>№{{forloop.counter}}<p>
-                <ul>{{c}} <a href="{% url 'polls:votes' c.id %}" target="_blank">Like</a></ul>
-                
+            <p>№{{forloop.counter}} <a href="{%url 'polls:choice-update' c.id%}">Choice Update</a><p>
+            <ul>{{c}} <a href="{% url 'polls:votes' c.id %}" target="_blank">Like</a></ul>
+            <p><a href="{%url 'polls:choice-delete' c.id%}">Choice Delete</a></p>
+            <br>
             {% endfor %}
+        {% endcomment %} -->
+
         {% endfor %}
+        
     </div>
 </body>
 </html>

@@ -1,0 +1,19 @@
+{% extends "polls/pollsBase.html" %}
+{% block title %}My Questions{% endblock %}
+{% block content %}
+    <div class="">
+        <h3><a href="{%url 'polls:choice-create'%}">Create choice</a></h3>
+        {{object.question_text}}
+        {%if ch%}
+            {%for c in ch%}
+                <h3>{{c}}</h3>
+                <p><a href="{%url 'polls:choice-update' c.id%}">Choice Update</a><p>
+                <p><a href="{%url 'polls:choice-delete' c.id%}">Choice Delete</a></p>
+            {%endfor%}
+        {%else%}
+                <h4 style="color: red;">There are no answers here yet</h4>
+        {%endif%}
+        
+    </div>
+
+{% endblock %}

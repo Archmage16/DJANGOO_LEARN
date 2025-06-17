@@ -16,7 +16,8 @@ class QuestionModelform(forms.ModelForm):
 class ChoiceForm(forms.Form):
     question_text = forms.ModelChoiceField(queryset=Question.objects.all(), label='question')
     text_choice = forms.CharField(label='choice text', max_length=200)
-    votes = forms.IntegerField(label='votes', initial=0)
+    votes = forms.IntegerField(label='votes', initial=0, min_value=0)
+    
     
 class ChoiceModelform(forms.ModelForm):
     class Meta:

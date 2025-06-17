@@ -1,3 +1,5 @@
+from django.db.models.query import QuerySet
+from django.forms import BaseModelForm
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.core import exceptions
@@ -24,13 +26,19 @@ def index(req):
     # return render(req,'polls/index.html', cont)
     return render(req,'polls/in.html', cont) 
 
-class IndexView(TemplateView):
+class QuestionListView(ListView):
+    model = Question
     template_name = 'polls/in.html'
+    context_object_name = 'questions'
+    paginate_by = 1
+    
+class IndexView(TemplateView):
+    template_name = 'polls/ques/paginator.html'
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['questions'] = Question.objects.all()
         return context
-    
+    pass   
 
 
 
@@ -57,10 +65,15 @@ class AddQues(FormView):
         form.save()
         return super().form_valid(form)
 
-class Suc(View):
-    def get(self, req):
-        return render(req, 'polls/question-suc.html')
 
+
+class QuesSuc(View):
+    def get(self, req):
+        return render(req, 'polls/ques/question-suc.html')
+
+class ChoiceSuc(View):
+    def get(self, req):
+        return render(req, 'polls/choices/choice-suc.html')
 # def choices(req):
 #     if req.method == 'POST':
 #         form = ChoiceForm(req.POST)
@@ -87,14 +100,14 @@ def choices(req):
         if form.is_valid():
             # choice = Choice.objects.create(**form.cleaned_data)
             form.save()
-            return render(req, 'polls/choices.html', {'form': form})
+            return render(req, 'polls/choices/choices.html', {'form': form})
         else:
             error = form.errors
-            return render(req, 'polls/choices.html', {'error': error})
+            return render(req, 'polls/choices/choices.html', {'error': error})
             
     else:
         form = ChoiceModelform()
-        return render(req, 'polls/choices.html', {'form': form})   
+        return render(req, 'polls/choices/choices.html', {'form': form})   
     
     
     
@@ -113,13 +126,17 @@ def choices(req):
 #     }
 #     return render(req, 'polls/paginator.html', context)
 
-class QuestionListView(ListView):
-    model = Question
-    template_name = 'polls/paginator.html'
-    context_object_name = 'questions'
-    paginate_by = 4
-    pass
 
+
+# class ChoiceListView(ListView):
+#     model = Choice
+#     template_name = 'polls/pagiCH.html'
+#     context_object_name = 'choices'
+#     paginate_by = 5
+#     def get_queryset(self):
+#         question_id = self.kwargs.get('question_id')
+#         return Choice.objects.filter(question_text_id = question_id)  
+#     pass
 
 
 # def detail(req, question_id):
@@ -143,23 +160,56 @@ class QuestionListView(ListView):
 class QuesDetailView(DetailView):
     model = Question
     pk_url_kwarg = 'question_id' 
+    template_name = 'polls/ques/question_detail.html'
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        ques = self.kwargs
+        context['ch'] = Choice.objects.filter(question_text_id = ques['question_id'])
+        return context
 
 class QuesCreateeView(CreateView):
     model = Question
     fields = ['question_text']    
-    template_name = 'polls/formQues.htmll'
+    template_name = 'polls/ques/formQues.html'
     success_url = reverse_lazy('polls:question-suc')
 class QuesUpdateView(UpdateView):
     model = Question
     fields = ['question_text']
     pk_url_kwarg = 'question_id'
-    template_name = 'polls/formQues.html'
+    template_name = 'polls/ques/formQues.html'
     success_url = reverse_lazy('polls:question-suc')
 class QuesDeleteView(DeleteView):
     model = Question
-    template_name = 'polls/formQues.html'
+    template_name = 'polls/ques/formQues.html'
     pk_url_kwarg = 'question_id'
     success_url = reverse_lazy('polls:question-suc')
+
+
+class ChoiceCreateeView(CreateView):
+    model = Choice
+    form_class = ChoiceModelform
+    success_url = reverse_lazy('polls:choice-suc')
+    template_name = 'polls/ques/formQues.html'
+    def form_valid(self, form):
+        question_id = self.kwargs.get('question_text_id')
+        form.instance.question_id = question_id
+        return super().form_valid(form)
+class ChoiceUpdateView(UpdateView):
+    model = Choice
+    fields = ['text_choice']
+    pk_url_kwarg = 'question_text_id'
+
+    template_name = 'polls/ques/formQues.html'
+    success_url = reverse_lazy('polls:choice-suc')
+class ChoiceDeleteView(DeleteView):
+    model = Choice
+    template_name = 'polls/ques/formQues.html'
+    pk_url_kwarg = 'question_text_id'
+    success_url = reverse_lazy('polls:choice-suc')
+
+
+
+
 
 def votes(req, choice_id):
     choice = Choice.objects.filter(id=choice_id)
@@ -167,8 +217,6 @@ def votes(req, choice_id):
         choice.update(votes = F("votes") + 1)
         return HttpResponse(choice)
     return HttpResponse("Can't fint this choice")
-    
-
 
 class Greet(View):
     greet = "HI"
