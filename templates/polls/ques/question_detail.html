@@ -1,6 +1,7 @@
-{% extends "polls/pollsBase.html" %}
+{% extends "polls/parent.html" %}
 {% block title %}My Questions{% endblock %}
 {% block content %}
+    <a href="{%url 'polls:index'%}">Home</a>
     <div class="">
         <h3><a href="{%url 'polls:choice-create'%}">Create choice</a></h3>
         {{object.question_text}}

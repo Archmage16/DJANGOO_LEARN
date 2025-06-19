@@ -1,16 +1,8 @@
+{%extends 'polls/parent.html' %}
+{% block title %}Question List{% endblock %}
 
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% load static %} 
-    <link rel="stylesheet" href="{% static 'main.css' %}">
-    <title>Document</title>
-</head>
-<body>
-
-    <div class="quess">
+{% block content %}
+<div class="quess">
             {% for q in questions %}
                 <div class="ques">
                     <h3>{{q}}</h3>
@@ -27,5 +19,6 @@
             {% endfor %}
         
     </div>
-</body>
-</html>
+{%endblock%}
+
+

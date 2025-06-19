@@ -22,7 +22,7 @@ urlpatterns = [
     path('choice/', views.choices, name='choices'),
 
     path('choice/choice-suc/', views.ChoiceSuc.as_view(), name='choice-suc'),
-    path('<int:question_id>/choices/choiceList/', views.ChoiceSuc.as_view(), name='choice-list'),
+    path('<int:question_id>/choices/choiceList/', views.ChoiceListView.as_view(), name='choice-list'),
     path('choice/create/', views.ChoiceCreateeView.as_view(), name='choice-create'),
     path('choice/update/<int:question_text_id>', views.ChoiceUpdateView.as_view(), name='choice-update'),
     path('choice/delete/<int:question_text_id>', views.ChoiceDeleteView.as_view(), name='choice-delete'),

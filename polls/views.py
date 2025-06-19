@@ -128,15 +128,15 @@ def choices(req):
 
 
 
-# class ChoiceListView(ListView):
-#     model = Choice
-#     template_name = 'polls/pagiCH.html'
-#     context_object_name = 'choices'
-#     paginate_by = 5
-#     def get_queryset(self):
-#         question_id = self.kwargs.get('question_id')
-#         return Choice.objects.filter(question_text_id = question_id)  
-#     pass
+class ChoiceListView(ListView):
+    model = Choice
+    template_name = 'polls/choices/pagiCH.html'
+    context_object_name = 'choices'
+    paginate_by = 5
+    def get_queryset(self):
+        question_id = self.kwargs.get('question_id')
+        return Choice.objects.filter(question_text_id = question_id)  
+    pass
 
 
 # def detail(req, question_id):
