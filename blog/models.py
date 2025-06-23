@@ -1,7 +1,14 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 # Create your models here.
+
+class Like(models.Model):
+    user = models.ForeignKey(User, on_delete = models.CASCADE)
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey(ct_field='content_type', fk_field='object_id')
 class Prof(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.TextField(blank=True)
@@ -15,6 +22,9 @@ class Post(models.Model):
     content = models.TextField()
     author = models.ForeignKey(Prof, on_delete=models.CASCADE)
     created_time = models.DateTimeField(auto_now=True)
+
+    notes = GenericRelation(Like)
+
     def __str__(self) -> str:
         return self.title
 
@@ -33,3 +43,4 @@ class Comment(models.Model):
     def __str__(self) -> str:
         return f"Comment by {self.author.username} on {self.post.title}"
     
+

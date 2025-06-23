@@ -30,7 +30,7 @@ class Kit(models.Model):
     machine = models.ForeignKey(Machine, on_delete=models.CASCADE, related_name='kits')
     spare = models.ForeignKey(Spare, on_delete=models.CASCADE, related_name = 'kits')
     count = models.PositiveIntegerField()
-    def str(self):
+    def __str__(self):
         return self.name
 
     class Meta:

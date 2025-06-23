@@ -11,7 +11,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
 # from django.contrib.auth.views import redirect_to_login
-from blog.models import Prof, Post, Tag
+from blog.models import Prof, Post, Tag, Like
 from blog.forms import TagModelForm, PostModelForm, ProfModelForm, CommentModelForm
 
 
@@ -193,7 +193,6 @@ class PostCommentsView(LoginRequiredMixin, TemplateView):
         context['tags'] = Tag.objects.all()
         context['comments'] = post.comments.all()
         return context
-
 
 
 
