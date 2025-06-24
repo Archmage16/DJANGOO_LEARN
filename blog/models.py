@@ -9,10 +9,15 @@ class Like(models.Model):
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey(ct_field='content_type', fk_field='object_id')
+    
+    def __str__(self) -> str:
+        return f"{self.user.username} likes"
+    
 class Prof(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.TextField(blank=True)
     phone = models.CharField(max_length=20, blank=True)
+    like = GenericRelation(Like)
 
     def __str__(self) -> str:
         return self.user.username
@@ -23,13 +28,14 @@ class Post(models.Model):
     author = models.ForeignKey(Prof, on_delete=models.CASCADE)
     created_time = models.DateTimeField(auto_now=True)
 
-    notes = GenericRelation(Like)
+    like = GenericRelation(Like)
 
     def __str__(self) -> str:
         return self.title
 
 class Tag(models.Model):
     name = models.CharField(max_length=50)
+    like = GenericRelation(Like)
     posts = models.ManyToManyField(Post, related_name='tags')
     def __str__(self) -> str:
         return f"{self.name}"
@@ -38,6 +44,7 @@ class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     text = models.TextField(null=False, blank=False)
+    like = GenericRelation(Like)
     created_at = models.DateTimeField(auto_now_add=True)
     
     def __str__(self) -> str:

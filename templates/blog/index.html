@@ -32,6 +32,7 @@
                 <a href="{% url 'blog:post' p.author.user.username p.title %}" class="btn-primary">Посмотреть информацию о посте</a> <br><br>
                 <a href="{% url 'blog:user' p.author.user.username %}">{{p.author.user.username}} info</a>
                 <p><a href="{% url 'blog:postComment' p.author.user.username p.title%}">See all comments</a></p>
+                <p><a href="{% url 'blog:postLike' p.author.user.username p.title%}">Like</a></p>
             </div>
         </div>
       {%endfor%}

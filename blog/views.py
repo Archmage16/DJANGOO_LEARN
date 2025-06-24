@@ -1,3 +1,4 @@
+from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 
@@ -41,8 +42,38 @@ class IndexView(TemplateView):
         context['users'] = User.objects.all()
         context['user'] = self.request.user
         context['rever_posts'] = list(Post.objects.all())[::-1][:5]
+        # context['tags'] = Tag.objects.all()
+        context['likes'] = Like.objects.all()
+        
         return context
+class LikeView(LoginRequiredMixin, TemplateView):
+    template_name = 'blog/like.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        username = self.kwargs['username']
+        title = self.kwargs['title']
+
+        try:
+            user = User.objects.get(username=username)
+            prof = Prof.objects.get(user=user)
+            post = Post.objects.get(title=title, author=prof)
+            content_type = ContentType.objects.get_for_model(Post)
+            like_qs = Like.objects.filter(user=self.request.user, content_type=content_type, object_id=post.id)
+            if like_qs.exists():
+                # like_qs.delete()
+                liked = False
+            else:
+                Like.objects.create(user=self.request.user, content_type=content_type, object_id=post.id)
+                liked = True
+            context['liked'] = liked
+        except Exception as e:
+            context['error'] = str(e)
+
+        context['user'] = user
+        context['prof'] = prof
+        context['post'] = post
+        return context
 
 def myauth(req):
     if req.user.is_authenticated:
@@ -184,6 +215,7 @@ class PostCommentsView(LoginRequiredMixin, TemplateView):
             user = User.objects.get(username=username)
             prof = Prof.objects.get(user=user)
             post = Post.objects.get(title=title, author=prof)
+            
         except Exception as e:
             return HttpResponse(f"Error: {str(e)}")
 

@@ -22,12 +22,12 @@ urlpatterns = [
     path('reset/<uidb64>/<token>/', PasswordResetConfirmView.as_view(success_url = reverse_lazy("blog:reset_complete")), name='password_reset_confirm'),
     path('reset_complete', PasswordResetCompleteView.as_view(), name='reset_complete'),
 
-
     path('tagForm/', views.TagFormView.as_view(), name='tagForm'),
     path('postForm/', views.PostFormView.as_view(), name='postForm'),  
     path('profForm/', views.ProfFormView.as_view(), name='profForm'),
     path('commentForm/', views.CommentFormView.as_view(), name='commentForm'),    
     
+    path('like/<str:username>/<str:title>/', views.LikeView.as_view(), name='postLike'),
     path('postComment/<str:username>/<str:title>/', views.PostCommentsView.as_view(), name='postComment'),
     path('<str:username>/', views.UserProfileView.as_view(), name='user'),
     path('<str:username>/<str:title>', views.PostDetailView.as_view(), name='post'),
