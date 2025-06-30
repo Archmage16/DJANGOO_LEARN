@@ -4,6 +4,13 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 # Create your models here.
 
+class PostManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().order_by('-created_time')
+    def order_by_author(self):
+        return super().get_queryset().order_by('author__user__username')
+
+
 class Like(models.Model):
     user = models.ForeignKey(User, on_delete = models.CASCADE)
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
@@ -29,6 +36,7 @@ class Post(models.Model):
     created_time = models.DateTimeField(auto_now=True)
 
     like = GenericRelation(Like)
+    objects = PostManager()
 
     def __str__(self) -> str:
         return self.title
@@ -50,4 +58,25 @@ class Comment(models.Model):
     def __str__(self) -> str:
         return f"Comment by {self.author.username} on {self.post.title}"
     
+#1
+class Message(models.Model):
+    content = models.TextField()
 
+class Privete(Message):
+    user = models.ForeignKey(User, on_delete = models.CASCADE, related_name = 'private_message')
+#2
+class Message2(models.Model):
+    content = models.TextField()
+    class Meta:
+        abstract = True
+
+class Privete2(Message2):
+    user = models.ForeignKey(User, on_delete = models.CASCADE, related_name = 'private_message2')
+
+
+#3
+class PostOrdering(Post):
+    class Meta:
+        proxy = True
+        verbose_name = 'Ordered Post'
+        ordering = ['-created_time']
