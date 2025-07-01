@@ -3,7 +3,7 @@ from django.db import models
 # Create your models here.
 class Spare(models.Model):
     name = models.CharField(max_length = 100)
-    def str(self):
+    def __str__(self):
         return self.name
     
     class Meta:
