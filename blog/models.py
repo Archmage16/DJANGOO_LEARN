@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
+from django.conf import settings
 # Create your models here.
 
 class PostManager(models.Manager):
@@ -12,7 +13,7 @@ class PostManager(models.Manager):
 
 
 class Like(models.Model):
-    user = models.ForeignKey(User, on_delete = models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE)
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey(ct_field='content_type', fk_field='object_id')
@@ -21,7 +22,7 @@ class Like(models.Model):
         return f"{self.user.username} likes"
     
 class Prof(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     bio = models.TextField(blank=True)
     phone = models.CharField(max_length=20, blank=True)
     like = GenericRelation(Like)
@@ -50,7 +51,7 @@ class Tag(models.Model):
     
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     text = models.TextField(null=False, blank=False)
     like = GenericRelation(Like)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -63,7 +64,7 @@ class Message(models.Model):
     content = models.TextField()
 
 class Privete(Message):
-    user = models.ForeignKey(User, on_delete = models.CASCADE, related_name = 'private_message')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE, related_name = 'private_message')
 #2
 class Message2(models.Model):
     content = models.TextField()
@@ -71,7 +72,7 @@ class Message2(models.Model):
         abstract = True
 
 class Privete2(Message2):
-    user = models.ForeignKey(User, on_delete = models.CASCADE, related_name = 'private_message2')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE, related_name = 'private_message2')
 
 
 #3

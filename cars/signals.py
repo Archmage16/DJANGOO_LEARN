@@ -1,6 +1,31 @@
 # from django.db.models.signals import pre_init, post_init, post_save, pre_save
 # from django.core.signals import request_started, request_finished
-# from .models import Spare
+from .models import Spare
+from django.db.models.signals import post_save, post_delete
+import django.dispatch
+
+have_10_spares = django.dispatch.Signal()
+
+def spare_created_handler(sender, instance, created, **kwargs):
+    if created:
+        print(f'New spare created:{instance}')
+    else:
+        print(f'Spare updated:{instance}')
+    
+def spare_deleted_handler(sender, instance, created, **kwargs):
+    print(f'Spare deleted:{instance}')
+
+def spare_lim_handler(sender,**kwargs):
+    if Spare.objects.count() >=10:
+        print("There are 10 or more")
+    else:
+        print('There are less than 10')
+
+post_save.connect(spare_created_handler,sender=Spare)
+post_delete.connect(spare_deleted_handler,sender=Spare)
+have_10_spares.connect(spare_lim_handler, sender = Spare)
+
+
 
 # def before_dispatcher(sender, **kwargs):
 #     instance = kwargs.get('instance')

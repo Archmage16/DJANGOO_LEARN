@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'blog',
     'cars',
     'school',
+    'userAuth',
 ]
 
 MIDDLEWARE = [
@@ -85,7 +86,7 @@ DATABASES = {
     }
 }
 
-
+AUTH_USER_MODEL = 'userAuth.UserProfile'
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
