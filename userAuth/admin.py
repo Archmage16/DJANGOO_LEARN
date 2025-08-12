@@ -8,12 +8,12 @@ class UserAdminProf(UserAdmin):
     # admin.site.register(models.UserProfile)
     fieldsets = UserAdmin.fieldsets + (
         ("AddInfo", 
-            {'fields': ('bio', 'location', 'date'),
+            {'fields': ('bio', 'location', 'date', 'cv', 'avatar'),
         }),
     )
     add_fieldsets = UserAdmin.add_fieldsets + (
         ("AddInfo", 
-            {'fields': ('bio', 'location', 'date'),
+            {'fields': ('bio', 'location', 'date', 'cv', 'avatar'),
         }),
     )
     pass

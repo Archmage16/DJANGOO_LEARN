@@ -18,6 +18,8 @@ from re import template
 from django.contrib import admin
 from django.urls import path, include
 from . import views
+from django.conf.urls.static import static
+from django.conf import settings
 # from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeDoneView, PasswordChangeView
 
 urlpatterns = [
@@ -27,3 +29,4 @@ urlpatterns = [
     path('blog/', include('blog.urls', namespace='blog')),
     path('cars/', include('cars.urls', namespace='cars')),
 ]
+urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

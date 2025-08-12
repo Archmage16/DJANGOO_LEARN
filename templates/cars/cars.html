@@ -3,4 +3,6 @@
 
 {% block content %}
     <h1>Cars</h1>
+    <h2><a href="{% url 'cars:spares'%}">Spares</a></h2>
+    <a href="{% url 'cars:create_spares'%}">Create spare</a>
 {% endblock %}

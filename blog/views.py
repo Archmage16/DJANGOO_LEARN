@@ -8,14 +8,15 @@ from django.views.generic.base import TemplateView
 from django.views.generic.detail import DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin, PermissionRequiredMixin
 
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
 # from django.contrib.auth.views import redirect_to_login
 from blog.models import Prof, Post, Tag, Like
 from blog.forms import TagModelForm, PostModelForm, ProfModelForm, CommentModelForm
 
-
+from django.contrib.auth import get_user_model
+User = get_user_model()
 
 # Create your views here.
 # @login_required()
