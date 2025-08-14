@@ -7,6 +7,12 @@ class Spare(models.Model):
     def __str__(self):
         return self.name
     
+    def save(self, *args, **kwargs):
+        if not self.image:
+            print(f'{self.name} не содержит картинку')
+        else:
+            print(f'{self.name} содержит картинку')
+        
     class Meta:
         verbose_name = 'Деталь'
         verbose_name_plural = 'Детали'

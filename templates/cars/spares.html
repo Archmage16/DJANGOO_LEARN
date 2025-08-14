@@ -1,12 +1,27 @@
-{%extends 'base.html'%}
-{% block content %}
-<h1>Spare Parts</h1>
-{%for spare in spares%}
-<div>
-    {%if spare.image %}
-        <img src="{{spare.image.url}}" alt="{{spare.name}}" style="width: 100px; height: auto;">
-    {%endif%}
-</div>
-{%endfor%}
-<a href="{% url 'cars:create_spares'%}">Create spare</a>
-{% endblock content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'images.css' %}">
+    <title>Spare Parts</title>
+    
+</head>
+<body>
+    <a href="{% url 'cars:create_spares'%}">Create spare</a>
+    <h1>All spares</h1>
+    <div class="spares">
+        {%for spare in spares%}
+            <div class="spare">
+                {%if spare.image %}
+                    {{spare.name}}<img src="{{spare.image.url}}" alt="{{spare.name}}" class="imgs" >
+                {%else%}
+                    {{spare.name}}
+                {%endif%}
+            </div>
+        {%endfor%}
+    </div>
+</body>
+</html>
